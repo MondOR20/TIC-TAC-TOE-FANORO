@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe</title>
+    <link
+        rel="stylesheet"
+        href="css/style.css">
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+</head>
+<body>
+<div class="app" id="app">
+    <!-- !!!!!!!!!!!!!!!!!!!!!!!!=
+         OVERLAY MENU MOBILE
+    !!!!!!!!!!!!!!!!!!!!!!!! -->
+    <div
+        class="menu-overlay"
+        id="menuOverlay">
+    </div>
+    <!-- !!!!!!!!!!!!!!!!!!!!!!!!=
+         MENU LATÉRAL
+    !!!!!!!!!!!!!!!!!!!!!!!! -->
+    <aside
+        class="side-menu"
+        id="sideMenu">
+        <div class="side-menu-header">
+            <div class="brand">
+                <span class="brand-x">X</span>
+                <strong>
+                    TIC TAC TOE
+                </strong>
+            </div>
+            <button
+                id="closeMenu"
+                class="close-menu">
+                <i class="bi bi-x-lg"></i>
+            </button
+        </div>
+        <nav class="side-nav">
+            <button
+                class="side-link active"
+                data-screen="home">
+                <i class="bi bi-house-fill"></i
+                <span>
+                    Accueil
+                </span>
+            </button>
+            <button
+                class="side-link"
+                data-screen="game">
+                <i class="bi bi-controller"></i>
+                <span>
+                    Partie
+                </span>
+            </button>
+            <button
+                class="side-link"
+                data-screen="scores">
+                <i class="bi bi-trophy-fill"></i>
+                <span>
+                    Scores
+                </span>
+            </button>
+            <button
+                class="side-link"
+                data-screen="history">
+                <i class="bi bi-card-list"></i>
+                <span>
+                    Historique
+                </span>
+            </button>
+            <button
+                class="side-link"
+                data-screen="settings">
+                <i class="bi bi-gear-fill"></i>
+                <span>
+                    Paramètres
+                </span>
+            </button>
+            <button
+                class="side-link"
+                data-screen="about">
+                <i class="bi bi-info-circle-fill"></i>
+                <span>
+                    À propos
+                </span>
+            </button>
+        </nav>
+    </aside>
+    <!-- !!!!!!!!!!!!!!!!!!!!!!!!=
+         HEADER
+    !!!!!!!!!!!!!!!!!!!!!!!! -->
+    <header class="top-bar">
+        <div class="brand">
+            <span class="brand-x">
+                X
+            </span>
+            <span class="brand-o">
+                O
+            </span>
+            <h1>
+                TIC TAC TOE
+            </h1>
+        </div>
+        <nav class="desktop-nav">
+            <button
+                class="nav-link active"
+                data-screen="home">
+                <i class="bi bi-house-fill"></i>
+                Accueil
+            </button>
+            <button
+                class="nav-link
+                data-screen="game">
+                <i class="bi bi-controller"></i>
+                Partie
+            </button>
+            <button
+                class="nav-link"
+                data-screen="scores">
+                <i class="bi bi-trophy-fill"></i>
+                Scores
+            </button>
+            <button
+                class="nav-link"
+                data-screen="history">
+                <i class="bi bi-card-list"></i>
+                Historique
+            </button>
+            <button
+                class="nav-link"
+                data-screen="settings">
+                <i class="bi bi-gear-fill"></i>
+                Paramètres
+            </button>
+            <button
+                class="nav-link"
+                data-screen="about">
+                <i class="bi bi-info-circle-fill"></i>
+                À propos
+            </button>
+        </nav>
+        <button
+            class="menu-toggle"
+            id="menuToggle">
+            <i class="bi bi-list"></i>
+        </button>
+    </header>
+    <!-- !!!!!!!!!!!!!!!!!!!!!!!!=
+         CONTENU
+    !!!!!!!!!!!!!!!!!!!!!!!! -->
+    <main class="main-content">
+        <!-- !!!!!!!!!!!!!!!!!!!!!!!!=
+             ACCUEIL
+         -->
+        <section
+            class="screen active"
+            id="homeScreen"
+            data-screen-content="home">
+            <div class="hero">
+                <div class="hero-symbols">
+                    <span class="hero-x">
+                        X
+                    </span>
+                    <div class="hero-title">
+                        <span>
+                            TIC
+                        </span>
+                        <span>
+                            TAC
+                        </span>
+                        <span>
+                            TO
+                        </span>
+                    </div>
+                    <span class="hero-o">
+                        O
+                    </span>
+                </div>
+                <h2>
+                    Le jeu classique,
+                    <span>
+                        revisité.
+                    </span>
+                </h2>
+                <p>
+                    Défiez l'ordinateur ou jouez
+                    avec vos amis.
+                </p>
+            </div>
+            <div class="home-menu">
+                <!-- 1 JOUEUR -->
+                <button
+                    id="contrePC"
+                    class="mode-card game-mode"
+                    data-mode="computer">
+                    <div class="mode-icon">
+                        <i class="bi bi-person-fill"></i>
+                    </div>
+                    <div>
+                        <h3>
+                            1 JOUEUR
+                        </h3>
+                        <p>
+                            Jouer contre l'ordinateur
+                        </p>
+                    </div>
+                    <i class="bi bi-chevron-right"></i>
+                </button>
+                <!-- 2 JOUEURS -->
+                <button
+                    id="modePlayer"
+                    class="mode-card game-mode"
+                    data-mode="player">
+                    <div class="mode-icon">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+                    <div>
+                        <h3>
+                            2 JOUEURS
+                        </h3>
+                        <p>
+                            Jouer entre amis
+                        </p>
+                    </div>
+                    <i class="bi bi-chevron-right"></i>
+                </button>
+                <!-- PARAMÈTRES -->
+                <button
+                    id="btnSettings"
+                    class="mode-card">
+                    <div class="mode-icon">
+                        <i class="bi bi-gear-fill"></i>
+                    </div>
+                    <div>
+                        <h3>
+                            PARAMÈTRES
+                        </h3>
+                        <p>
+                            Personnaliser le jeu
+                        </p>
+                    </div>
+                    <i class="bi bi-chevron-right"></i>
+                </button>
+                <!-- SCORES -->
+                <button
+                    class="mode-card"
+                    data-screen="scores">
+                    <div class="mode-icon">
+                        <i class="bi bi-trophy-fill"></i>
+                    </div>
+                    <div>
+                        <h3>
+                            SCORES
+                        </h3>
+                        <p>
+                            Voir les meilleurs scores
+                        </p>
+                    </div>
+                    <i class="bi bi-chevron-right"></i>
+                </button>
+                <!-- À PROPOS -->
+                <button
+                    class="mode-card"
+                    data-screen="about">
+                    <div class="mode-icon">
+                        <i class="bi bi-info-circle-fill"></i>
+                    </div>
+                    <div>
+                        <h3>
+                            À PROPOS
+                        </h3>
+                        <p>
+                            Informations sur le jeu
+                        </p>
+                    </div>
+                    <i class="bi bi-chevron-right"></i>
+                </button>
+            </div>
+            <button
+                id="btnStart"
+                class="primary-button">
+                <i class="bi bi-play-fill"></i>
+                COMMENCER
+            </button>
+        </section>
+        <!-- !!!!!!!!!!!!!!!!!!!!!!!!=
+             CONFIGURATION
+         -->
+        <section
+            class="screen"
+            id="configScreen">
+            <div
+                class="player-config"
+                id="playerConfig">
+                <div class="config-box">
+                    <button
+                        class="back-button"
+                        data-screen="home">
+                        <i class="bi bi-arrow-left"></i>
+                        Retour
+                    </button>
+                    <h2>
+                        Configuration des joueurs
+                    </h2>
+                    <div class="config-group">
+                        <label>
+                            Nom du joueur X
+                        </label>
+                        <input
+                            type="text"
+                            id="playerXName"
+                            placeholder="Votre nom">
+                    </div>
+                    <p>
+                        Choisissez votre symbole
+                    </p>
+                    <div class="symbols">
+                        <button
+                            class="symbol-btn active"
+                            data-symbol="X">
+                            X
+                        </button>
+                        <button
+                            class="symbol-btn"
+                            data-symbol="O">
+                            O
+                        </button>
+                    </div>
+                    <div id="playerOConfig">
+                        <div class="config-group">
+                            <label>
+                                Nom du joueur O
+                            </label>
+                            <input
+                                type="text"
+                                id="playerOName"
+                                placeholder="Nom joueur 2">
+                        </div>
+                        <p>
+                            Symbole joueur 2
+                        </p>
+                        <div class="symbols">
+                            <button
+                                class="symbol-btn"
+                                data-player="O"
+                                data-symbol="X">
+                                X
+                            </button>
+                            <button
+                                class="symbol-btn active"
+                                data-player="O"
+                                data-symbol="O">
+                                O
+                            </button>
+                        </div>
+                    </div>
+                    <p
+                        id="configError"
+                        class="error-message">
+                    </p>
+                    <button
+                        id="confirmPlayers"
+                        class="primary-button">
+                        COMMENCER LA PARTIE
+                    </button>
+                </div>
+            </div>
+        </section>
+        <!-- !!!!!!!!!!!!!!!!!!!!!!!!=
+             JEU
+         -->
+        <section
+            class="screen"
+            id="gameScreen">
+            <div class="game-header">
+                <div>
+                    <span>
+                        PARTIE EN COURS
+                    </span>
+                    <h2>
+                        TIC TAC TOE
+                    </h2>
+                </div>
+                <button
+                    id="gameMenuButton"
+                    class="icon-button">
+                    <i class="bi bi-three-dots"></i>
+                </button>
+            </div>
+            <!-- !!!!!!!!!!!!!!!!!!!!!!!!=
+                 ZONE DE JEU
+            !!!!!!!!!!!!!!!!!!!!!!!! -->
+            <div class="game-layout">
+                <!-- JOUEUR X -->
+                <article
+                    class="player-card player-x">
+                    <div class="player-symbol">
+                        X
+                    </div>
+                    <div class="player-info">
+                        <h3 id="nameX">
+                            JOUEUR X
+                        </h3>
+                        <p id="player-x-mode">
+                            Vous
+                        </p>
+                    </div>
+                    <div class="player-score">
+                        <span id="score-x">
+                            0
+                        </span>
+                    </div>
+                </article>
+                <!-- PLATEAU -->
+                <div class="board-container">
+                    <div
+                        class="turn">
+                        <span>
+                            Tour de
+                        </span>
+                        <strong id="currentTurn">
+                            X
+                        </strong>
+                    </div>
+                    <section
+                        class="board"
+                        id="board">
+                        <button
+                            class="cell case"
+                            data-index="0">
+                        </button>
+                        <button
+                            class="cell case"
+                            data-index="1">
+                        </button>
+                        <button
+                            class="cell case"
+                            data-index="2">
+                        </button>
+                        <button
+                            class="cell case"
+                            data-index="3">
+                        </button>
+                        <button
+                            class="cell case"
+                            data-index="4">
+                        </button>
+                        <button
+                            class="cell case"
+                            data-index="5">
+                        </button>
+                        <button
+                            class="cell case"
+                            data-index="6">
+                        </button>
+                        <button
+                            class="cell case"
+                            data-index="7">
+                        </button>
+                        <button
+                            class="cell case"
+                            data-index="8">
+                        </button>
+                    </section>
+                    <div class="buttons">
+                        <button
+                            class="retry"
+                            id="retry">
+                            <i class="bi bi-arrow-repeat"></i>
+                            REJOUER
+                        </button>
+                        <button
+                            class="new-game"
+                            id="newGame">
+                            <i class="bi bi-plus-lg"></i>
+                            NOUVELLE PARTIE
+                        </button>
+                    </div>
+                </div>
+                <!-- JOUEUR O -->
+                <article
+                    class="player-card player-o">
+                    <div class="player-symbol">
+                        O
+                    </div>
+                    <div class="player-info">
+                        <h3 id="nameO">
+                            JOUEUR O
+                        </h3>
+                        <p id="player-o-mode">
+                            Ordinateur
+                        </p>
+                    </div>
+                    <div class="player-score">
+                        <span id="score-o">
+                            0
+                        </span>
+                    </div>
+                </article>
+            </div>
+            <!-- SCORE MOBILE -->
+            <div class="mobile-score-board">
+                <div>
+                    <strong>
+                        X
+                    </strong>
+                    <span id="mobile-score-x">
+                        0
+                    </span>
+                </div>
+                <div class="mobile-score-separator">
+                    :
+                </div>
+                <div>
+                    <strong>
+                        O
+                    </strong>
+                    <span id="mobile-score-o">
+                        0
+                    </span>
+                </div>
+            </div>
+        </section>
+        <!-- !!!!!!!!!!!!!!!!!!!!!!!!=
+             SCORES
+         -->
+        <section
+            class="screen"
+            id="scoresScreen">
+            <div class="page-header">
+                <button
+                    class="back-button"
+                    data-screen="home">
+                    <i class="bi bi-arrow-left"></i>
+                    Retour
+                </button>
+                <h2>
+                    MEILLEURS SCORES
+                </h2>
+            </div>
+            <div class="tabs">
+                <button
+                    class="tab active"
+                    data-mode="solo">
+                    1 JOUEUR
+                </button>
+                <button
+                    class="tab"
+                    data-mode="multi">
+                    2 JOUEURS
+                </button>
+            </div>
+            <section
+                class="ranking"
+                id="ranking">
+                <div class="empty-state">
+                    <i class="bi bi-trophy"></i>
+                    <h3>
+                        Aucun score
+                    </h3>
+                    <p>
+                        Jouez une partie pour
+                        apparaître dans le classement.
+                    </p>
+                </div>
+            </section>
+        </section>
+        <!-- !!!!!!!!!!!!!!!!!!!!!!!!=
+             HISTORIQUE
+         -->
+        <section
+            class="screen"
+            id="historyScreen">
+            <div class="page-header">
+                <button
+                    class="back-button"
+                    data-screen="home">
+                    <i class="bi bi-arrow-left"></i>
+                    Retour
+                </button>
+                <h2>
+                    HISTORIQUE
+                </h2>
+            </div>
+            <section
+                class="history-list"
+                id="history-list">
+                <div class="empty-state">
+                    <i class="bi bi-clock-history"></i>
+                    <h3>
+                        Aucun historique
+                    </h3>
+                    <p>
+                        Vos parties apparaîtront ici.
+                    </p>
+                </div>
+            </section>
+            <button
+                id="clear-history"
+                class="danger-button">
+                <i class="bi bi-trash"></i>
+                EFFACER L'HISTORIQUE
+            </button>
+        </section>
+        <!-- !!!!!!!!!!!!!!!!!!!!!!!!=
+             PARAMÈTRES
+         -->
+        <section
+            class="screen"
+            id="settingsScreen">
+            <div class="page-header">
+                <button
+                    class="back-button"
+                    data-screen="home">
+                    <i class="bi bi-arrow-left"></i>
+                    Retour
+                </button>
+                <h2>
+                    PARAMÈTRES
+                </h2>
+            </div>
+            <!-- THÈME -->
+            <section class="settings-section">
+                <h3>
+                    THÈME
+                </h3>
+                <div class="theme-container">
+                    <button
+                        class="theme-card"
+                        data-theme="light">
+                        <i class="bi bi-sun"></i>
+                        <span>
+                            Clair
+                        </span>
+                    </button>
+                    <button
+                        class="theme-card active"
+                        data-theme="dark">
+                        <i class="bi bi-moon"></i>
+                        <span>
+                            Sombre
+                        </span>
+                    </button>
+                    <button
+                        class="theme-card"
+                        data-theme="system">
+                        <i class="bi bi-display"></i>
+                        <span>
+                            Système
+                        </span>
+                    </button>
+                </div>
+            </section>
+            <!-- SONS -->
+            <section class="settings-section">
+                <h3>
+                    SONS
+                </h3>
+                <div class="sound-box">
+                    <div class="sound-title">
+                        <i class="bi bi-volume-up"></i>
+                        <span>
+                            Activer les sons
+                        </span>
+                    </div>
+                    <label class="switch">
+                        <input
+                            type="checkbox"
+                            id="soundToggle"
+                            checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </section>
+            <!-- SYMBOLES -->
+            <section class="settings-section">
+                <h3>
+                    SYMBOLES
+                </h3>
+                <p>
+                    Choisissez vos symboles
+                </p>
+                <div class="symbol-container">
+                    <button class="symbol-card active">
+                        X O
+                    </button>
+                    <button class="symbol-card">
+                        ⭐
+                    </button>
+                    <button class="symbol-card">
+                        ❤️
+                    </button>
+                    <button class="symbol-card">
+                        🍃
+                    </button>
+                    <button class="symbol-card">
+                        ⚡
+                    </button>
+                </div>
+            </section>
+            <!-- PREMIER JOUEUR -->
+            <section class="settings-section">
+                <h3>
+                    PREMIER JOUEUR
+                </h3>
+                <p>
+                    Qui commence ?
+                </p>
+                <div class="first-player">
+                    <button class="active">
+                        X
+                    </button>
+                    <button>
+                        O
+                    </button>
+                </div>
+            </section>
+            <!-- RESET -->
+            <section class="settings-section">
+                <h3>
+                    RÉINITIALISER
+                </h3>
+                <p>
+                    Remettre tous les scores à zéro.
+                </p>
+                <button
+                    class="reset-button"
+                    id="resetScores">
+                    RÉINITIALISER LES SCORES
+                </button>
+            </section>
+        </section>
+        <!-- !!!!!!!!!!!!!!!!!!!!!!!!=
+             À PROPOS
+         -->
+        <section
+            class="screen"
+            id="aboutScreen">
+            <div class="page-header">
+                <button
+                    class="back-button"
+                    data-screen="home">
+                    <i class="bi bi-arrow-left"></i>
+                    Retour
+                </button>
+                <h2>
+                    À PROPOS
+                </h2>
+            </div>
+            <section class="about-logo">
+                <div class="logo-circle">
+                    <span>
+                        X
+                    </span>
+                    <span>
+                        O
+                    </span>
+                </div>
+                <h2>
+                    TIC TAC TOE
+                </h2>
+                <p>
+                    Version 1.0.0
+                </p>
+            </section>
+            <section class="about-section">
+                <h3>
+                    DESCRIPTION
+                </h3>
+                <p>
+                    Tic Tac Toe est un jeu classique
+                    permettant d'affronter l'ordinateur
+                    ou un autre joueur sur une grille
+                    de trois lignes et trois colonnes.
+                </p>
+            </section>
+            <section class="about-section">
+                <h3>
+                    FONCTIONNALITÉS
+                </h3>
+                <ul>
+                    <li>
+                        Mode 1 joueur
+                    </li>
+                    <li>
+                        Mode 2 joueurs
+                    </li>
+                    <li>
+                        Historique des parties
+                    </li>
+                    <li>
+                        Sauvegarde des scores
+                    </li>
+                    <li>
+                        Mode sombre
+                    </li>
+                    <li>
+                        Interface responsive
+                    </li>
+                </ul>
+            </section>
+            <section class="developer-card">
+                <div class="developer-image">
+                    <i class="bi bi-person-circle"></i>
+                </div>
+                <h3>
+                    Mond Mondor
+                </h3>
+                <p>
+                    Développeur Full-Stack
+                </p>
+            </section>
+            <section class="social-links">
+                <a href="#">
+                    <i class="bi bi-facebook"></i>
+                </a>
+                <a href="#">
+                    <i class="bi bi-github"></i>
+                </a>
+                <a href="#">
+                    <i class="bi bi-linkedin"></i>
+                </a>
+                <a href="#">
+                    <i class="bi bi-envelope-fill"></i>
+                </a>
+            </section>
+        </section>
+    </main>
+    <!-- !!!!!!!!!!!!!!!!!!!!!!!!=
+         POPUP VICTOIRE
+    !!!!!!!!!!!!!!!!!!!!!!!! -->
+    <section
+        class="winner-popup"
+        id="winnerPopup">
+        <div class="winner-box">
+            <i class="bi bi-trophy-fill"></i>
+            <h2 id="winnerTitle">
+                Victoire !
+            </h2>
+            <p id="winnerMessage">
+            </p>
+            <button id="closeWinner">
+                CONTINUER
+            </button>
+        </div>
+    </section>
+</div>
+<!-- !!!!!!!!!!!!!!!!!!!!!!!!=
+     JAVASCRIPT DU PROJET
+!!!!!!!!!!!!!!!!!!!!!!!!= -->
+<script src="js/script.js"></script>
+<script src="js/modepc.js"></script>
+<script src="js/liaison.js"></script>
+</body>
+</html
