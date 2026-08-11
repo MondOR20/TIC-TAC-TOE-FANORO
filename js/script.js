@@ -35,6 +35,10 @@ let board = [
 let currentPlayer = null;
 let gameRunning = false;
 let pcThinking = false;
+const MAX_MOVES_PER_PLAYER = 3;
+
+let player1Moves = 0;
+let player2Moves = 0;
 let gameMode =
     localStorage.getItem("modeJeu") || "computer";
 let player1 = {
@@ -138,6 +142,8 @@ function startGame() {
     gameRunning = true;
     pcThinking = false;
     currentPlayer = player1;
+    player1Moves = 0;
+    player2Moves = 0;
     cells.forEach(cell => {
         cell.textContent = "";
         cell.classList.remove(
@@ -165,6 +171,8 @@ function resetBoard() {
     gameRunning = true;
     pcThinking = false;
     currentPlayer = player1;
+    player1Moves = 0;
+    player2Moves = 0;
     cells.forEach(cell => {
         cell.textContent = "";
         cell.classList.remove(
@@ -198,13 +206,45 @@ cells.forEach((cell, index) => {
    JOUER UNE CASE
 !!!!!!!!!!!!!!!!!!!!! */
 function playCell(index) {
+
     if (!gameRunning) {
         return;
     }
+
     if (pcThinking) {
         return;
     }
+
     if (board[index] !== "") {
+        return;
+    }
+
+    /* =====================================
+       LIMITE DE 3 COUPS PAR JOUEUR
+    ===================================== */
+
+    if (
+        currentPlayer === player1 &&
+        player1Moves >= MAX_MOVES_PER_PLAYER
+    ) {
+        return;
+    }
+
+    if (
+        currentPlayer === player2 &&
+        player2Moves >= MAX_MOVES_PER_PLAYER
+    ) {
+        return;
+    }
+
+    /* =====================================
+       EMPÊCHER LE CLIC PENDANT LE TOUR PC
+    ===================================== */
+
+    if (
+        gameMode === "computer" &&
+        currentPlayer === player2
+    ) {
         return;
     }
     /* Empêcher le joueur de jouer pendant le tour PC */
@@ -216,8 +256,13 @@ function playCell(index) {
     }
     /* Jouer */
     board[index] =
-        currentPlayer.symbol;
-    renderCell(index);
+    currentPlayer.symbol;
+    if (currentPlayer === player1) {
+    player1Moves++;
+    } else if (currentPlayer === player2) {
+    player2Moves++;
+    }
+renderCell(index);
     /* Vérifier résultat */
     checkWinner();
     if (!gameRunning) {
@@ -277,6 +322,10 @@ function jouerCoupPC(index) {
         return false;
     }
     if (board[index] !== "") {
+        return false;
+    }
+    
+    if (player2Moves >= MAX_MOVES_PER_PLAYER) {
         return false;
     }
     board[index] =
@@ -355,11 +404,14 @@ function checkWinner() {
         savePlayerScore(
             winnerPlayer
         );
+        setTimeout(() => {
+
         showWinner(
             winnerPlayer.name +
-            " a gagné !"
-        );
-        return;
+                " a gagné !"
+         );
+
+        }, 1000);
     }
     /* !!!!!!!!!!!!!!!!!!!!!!
        MATCH NUL
@@ -371,9 +423,13 @@ function checkWinner() {
             "Match nul",
             "draw"
         );
+        setTimeout(() => {
+
         showWinner(
-            "Match nul !"
+        "Match nul !"
         );
+
+}, 1000);
     }
 }
 /* !!!!!!!!!!!!!!!!!!!!!

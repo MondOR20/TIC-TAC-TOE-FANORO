@@ -1703,6 +1703,17 @@ body.light .first-player button {
     background:#f8fafc;
     color:#0f172a;
 }
+.cell.winner {
+    animation: winnerPulse 0.6s ease-in-out infinite alternate;
+}
+@keyframes winnerPulse {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(1.12);
+    }
+}
 /* !!!!!!!RÉDUCTION DES ANIMATIONS !!!!!!!!! */
 @media (prefers-reduced-motion: reduce) {
     * {
