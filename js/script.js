@@ -219,9 +219,12 @@ function playCell(index) {
         return;
     }
 
-    /* =====================================
-       LIMITE DE 3 COUPS PAR JOUEUR
-    ===================================== */
+    if (
+        gameMode === "computer" &&
+        currentPlayer === player2
+    ) {
+        return;
+    }
 
     if (
         currentPlayer === player1 &&
@@ -236,39 +239,18 @@ function playCell(index) {
     ) {
         return;
     }
-
-    /* =====================================
-       EMPÊCHER LE CLIC PENDANT LE TOUR PC
-    ===================================== */
-
-    if (
-        gameMode === "computer" &&
-        currentPlayer === player2
-    ) {
-        return;
-    }
-    /* Empêcher le joueur de jouer pendant le tour PC */
-    if (
-        gameMode === "computer" &&
-        currentPlayer === player2
-    ) {
-        return;
-    }
-    /* Jouer */
     board[index] =
-    currentPlayer.symbol;
+        currentPlayer.symbol;
     if (currentPlayer === player1) {
-    player1Moves++;
-    } else if (currentPlayer === player2) {
-    player2Moves++;
+        player1Moves++;
+    } else {
+        player2Moves++;
     }
-renderCell(index);
-    /* Vérifier résultat */
+    renderCell(index);
     checkWinner();
     if (!gameRunning) {
         return;
     }
-    /* MODE PC */
     if (
         gameMode === "computer" &&
         currentPlayer === player1
@@ -278,7 +260,8 @@ renderCell(index);
         pcThinking = true;
         setTimeout(() => {
             if (
-                typeof jouerTourPC === "function"
+                typeof jouerTourPC ===
+                "function"
             ) {
                 jouerTourPC();
             }
@@ -324,12 +307,15 @@ function jouerCoupPC(index) {
     if (board[index] !== "") {
         return false;
     }
-    
-    if (player2Moves >= MAX_MOVES_PER_PLAYER) {
+    if (
+        player2Moves >=
+        MAX_MOVES_PER_PLAYER
+    ) {
         return false;
     }
     board[index] =
         player2.symbol;
+    player2Moves++;
     renderCell(index);
     checkWinner();
     if (!gameRunning) {
@@ -345,91 +331,131 @@ function jouerCoupPC(index) {
    VERIFICATION VICTOIRE
 !!!!!!!!!!!!!!!!!!!!! */
 function checkWinner() {
+
     let winner = null;
     let winningPattern = null;
+
+    /* =====================================
+       CHERCHER UNE VICTOIRE
+    ===================================== */
+
     for (const pattern of patterns) {
-        const a =
-            board[pattern[0]];
-        const b =
-            board[pattern[1]];
-        const c =
-            board[pattern[2]];
+
+        const a = board[pattern[0]];
+        const b = board[pattern[1]];
+        const c = board[pattern[2]];
+
         if (
             a !== "" &&
             a === b &&
             b === c
         ) {
+
             winner = a;
-            winningPattern =
-                pattern;
+            winningPattern = pattern;
+
             break;
         }
     }
-    /* !!!!!!!!!!!!!!!!!!!!!!
+
+    /* =====================================
        VICTOIRE
-    !!!!!!!!!!!!!!!!!!!!!! */
+    ===================================== */
+
     if (winner) {
+
         gameRunning = false;
         pcThinking = false;
+
+        /* Animer les 3 cases */
         winningPattern.forEach(index => {
+
             if (cells[index]) {
+
                 cells[index].classList.add(
                     "winner"
                 );
+
             }
+
         });
+
         let winnerPlayer;
+
         if (
             winner === player1.symbol
         ) {
+
             winnerPlayer = player1;
+
             xScore++;
+
             localStorage.setItem(
                 "xScore",
                 xScore
             );
+
         } else {
+
             winnerPlayer = player2;
+
             oScore++;
+
             localStorage.setItem(
                 "oScore",
                 oScore
             );
         }
+
         updateScore();
+
         saveGameHistory(
             winnerPlayer.name,
             "win"
         );
+
         savePlayerScore(
             winnerPlayer
         );
+
+        /* IMPORTANT :
+           attendre avant le popup */
+
         setTimeout(() => {
 
-        showWinner(
-            winnerPlayer.name +
+            showWinner(
+                winnerPlayer.name +
                 " a gagné !"
-         );
+            );
 
         }, 1000);
+
+        return;
     }
-    /* !!!!!!!!!!!!!!!!!!!!!!
-       MATCH NUL
-    !!!!!!!!!!!!!!!!!!!!!! */
-    if (!board.includes("")) {
+
+    if (
+    player1Moves >= MAX_MOVES_PER_PLAYER &&
+    player2Moves >= MAX_MOVES_PER_PLAYER
+    ) {
+
         gameRunning = false;
         pcThinking = false;
+
         saveGameHistory(
             "Match nul",
             "draw"
         );
+
+        /* Laisser apparaître le dernier
+           symbole avant le popup */
+
         setTimeout(() => {
 
-        showWinner(
-        "Match nul !"
-        );
-
-}, 1000);
+            showWinner(
+                "Match nul !"
+            );
+        }, 1000);
+        return;
     }
 }
 /* !!!!!!!!!!!!!!!!!!!!!
