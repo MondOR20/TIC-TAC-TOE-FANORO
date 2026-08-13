@@ -33,6 +33,7 @@ let board = [
     "", "", ""
 ];
 let currentPlayer = null;
+let firstPlayer = 1;
 let gameRunning = false;
 let pcThinking = false;
 const MAX_MOVES_PER_PLAYER = 3;
@@ -141,9 +142,17 @@ function startGame() {
     ];
     gameRunning = true;
     pcThinking = false;
-    currentPlayer = player1;
+    if (firstPlayer === 1) {
+        currentPlayer = player1;
+        firstPlayer = 2;
+    } else {
+        currentPlayer = player2;
+        firstPlayer = 1;
+    }
+    /* Remise à zéro des coups */
     player1Moves = 0;
     player2Moves = 0;
+    /* Nettoyer le plateau */
     cells.forEach(cell => {
         cell.textContent = "";
         cell.classList.remove(
@@ -155,6 +164,23 @@ function startGame() {
     updatePlayersDisplay();
     updateTurn();
     updateScore();
+    if (
+        gameMode === "computer" &&
+        currentPlayer === player2
+    ) {
+
+        pcThinking = true;
+        updateTurn();
+        setTimeout(() => {
+            if (
+                typeof jouerTourPC ===
+                "function"
+            ) {
+                jouerTourPC();
+            }
+
+        }, 500);
+    }
 }
 /* !!!!!!!!!!!!!!!!!!!!!
    RESET PLATEAU
@@ -170,9 +196,18 @@ function resetBoard() {
     ];
     gameRunning = true;
     pcThinking = false;
-    currentPlayer = player1;
+    if (firstPlayer === 1) {
+        currentPlayer = player1;
+        firstPlayer = 2;
+    } else {
+        currentPlayer = player2;
+        firstPlayer = 1;
+
+    }
+    /* Remettre les compteurs à zéro */
     player1Moves = 0;
     player2Moves = 0;
+    /* Nettoyer le plateau */
     cells.forEach(cell => {
         cell.textContent = "";
         cell.classList.remove(
@@ -182,6 +217,20 @@ function resetBoard() {
         );
     });
     updateTurn();
+    if (
+        gameMode === "computer" &&
+        currentPlayer === player2
+    ) {
+        pcThinking = true;
+        setTimeout(() => {
+            if (
+                typeof jouerTourPC ===
+                "function"
+            ) {
+                jouerTourPC();
+            }
+        }, 500);
+    }
 }
 /* !!!!!!!!!!!!!!!!!!!!!
    CHANGER JOUEUR
@@ -506,16 +555,34 @@ if (retryButton) {
    NOUVELLE PARTIE
 !!!!!!!!!!!!!!!!!!!!! */
 if (newGameButton) {
+
     newGameButton.addEventListener(
         "click",
         () => {
+            /* Fermer le popup */
             if (winnerPopup) {
                 winnerPopup.classList.remove(
                     "active"
                 );
+
             }
+            /* Arrêter la partie actuelle */
             gameRunning = false;
             pcThinking = false;
+            xScore = 0;
+            oScore = 0;
+            localStorage.setItem(
+                "xScore",
+                "0"
+            );
+            localStorage.setItem(
+                "oScore",
+                "0"
+            );
+            /* Mettre l'affichage à jour */
+            updateScore();
+            player1Moves = 0;
+            player2Moves = 0;
             if (
                 typeof afficherConfiguration ===
                 "function"
